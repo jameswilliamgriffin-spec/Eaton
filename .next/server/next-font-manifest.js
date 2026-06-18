@@ -1,0 +1,1 @@
+self.__NEXT_FONT_MANIFEST='{"pages":{},"app":{"/Users/James/Desktop/1 Code Projects/Eaton/app/layout":["static/media/46bdd75a3ff56824-s.p.woff2","static/media/de42cfb9a3b980ae-s.p.woff2"]},"appUsingSizeAdjust":true,"pagesUsingSizeAdjust":false}';

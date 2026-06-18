@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST='{"components/big-decisions-section.tsx -> gsap":{"id":7605,"files":["static/chunks/c15bf2b0.ea334255f1a140fc.js","static/chunks/605.596b13dcde22bed6.js"]},"components/big-decisions-section.tsx -> gsap/ScrollTrigger":{"id":5580,"files":["static/chunks/580.823131c95794fd63.js"]}}';
