@@ -119,7 +119,7 @@ export function BigDecisionsSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative isolate overflow-hidden border-y border-brand-ink/8 bg-[#fbf7f3] py-24 md:py-32">
+    <section ref={sectionRef} className="night-pink-section relative isolate overflow-hidden border-y border-brand-ink/8 bg-[#fbf7f3] py-24 md:py-32">
       <BrandRingMotif className="-right-28 top-[38%] h-72 w-72 border-brand-green/[0.12]" />
       <BrandIconMotif className="-left-12 top-20 h-40 w-40 bg-brand-pink opacity-[0.055]" />
       <div data-parallax-photo className="absolute -right-24 top-8 -z-10 h-[420px] w-[620px] overflow-hidden rounded-[4rem] opacity-[0.09]">

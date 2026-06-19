@@ -68,7 +68,26 @@ export function PageAtmosphere() {
     return () => cleanup();
   }, []);
 
-  return <div className="site-grain pointer-events-none fixed inset-0 z-[100] opacity-[0.035]" aria-hidden="true" />;
+  return (
+    <>
+      <div className="disco-backdrop pointer-events-none fixed inset-0" aria-hidden="true">
+        <div className="disco-colour-cloud disco-colour-cloud-one" />
+        <div className="disco-colour-cloud disco-colour-cloud-two" />
+        <div className="disco-colour-cloud disco-colour-cloud-three" />
+        <div className="disco-light-rig disco-light-rig-one">
+          <i />
+          <i />
+          <i />
+        </div>
+        <div className="disco-light-rig disco-light-rig-two">
+          <i />
+          <i />
+        </div>
+        <div className="disco-floor-haze" />
+      </div>
+      <div className="site-grain pointer-events-none fixed inset-0 z-[100] opacity-[0.035]" aria-hidden="true" />
+    </>
+  );
 }
 
 export function HeroAtmosphere() {
@@ -121,8 +140,10 @@ export function HeroAtmosphere() {
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-brand-cream/18 via-transparent to-transparent" />
       <div className="hero-atmosphere-light absolute inset-0" />
+      <div className="hero-night-glass absolute inset-0" />
+      <div className="hero-night-sweep absolute inset-0" />
       <div className="hero-atmosphere-vignette absolute inset-0" />
-      <BrandIconMotif className="hero-atmosphere-mark right-[8%] top-[10%] h-72 w-72 bg-white opacity-[0.11]" />
+      <BrandIconMotif className="hero-atmosphere-mark neon-motif neon-flicker-hero right-[8%] top-[10%] h-72 w-72 bg-white opacity-[0.11]" />
 
       <div className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-brand-pink px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(150,46,139,0.28)] sm:left-7 sm:top-7">
         Local. Independent. Lovely.

@@ -40,6 +40,7 @@ import { MortgageCalculatorStrip } from "@/components/mortgage-calculator-strip"
 import { SectionHeading } from "@/components/section-heading";
 import { SiteFooter } from "@/components/site-footer";
 import { SoundtrackPlayer } from "@/components/soundtrack-player";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const testimonials = [
   {
@@ -320,10 +321,28 @@ export default function HomePage() {
     setActiveTeamMember((current) => (current + 1) % teamMembers.length);
   };
 
+  const moveHeroLights = (event: React.PointerEvent<HTMLElement>) => {
+    if (event.pointerType === "touch") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    event.currentTarget.style.setProperty("--club-light-x", `${x * 28}px`);
+    event.currentTarget.style.setProperty("--club-light-y", `${y * 20}px`);
+    event.currentTarget.style.setProperty("--club-light-x-reverse", `${x * -18}px`);
+    event.currentTarget.style.setProperty("--club-light-y-reverse", `${y * -13}px`);
+  };
+
+  const resetHeroLights = (event: React.PointerEvent<HTMLElement>) => {
+    event.currentTarget.style.setProperty("--club-light-x", "0px");
+    event.currentTarget.style.setProperty("--club-light-y", "0px");
+    event.currentTarget.style.setProperty("--club-light-x-reverse", "0px");
+    event.currentTarget.style.setProperty("--club-light-y-reverse", "0px");
+  };
+
   return (
-    <main className="overflow-hidden bg-brand-cream text-brand-ink">
+    <main className="site-root overflow-hidden bg-brand-cream text-brand-ink">
       <PageAtmosphere />
-      <header className="relative z-50 border-b border-brand-ink/8 bg-brand-cream/95 backdrop-blur-xl xl:sticky xl:top-0">
+      <header className="relative z-50 border-b border-brand-ink/8 bg-brand-cream/95 backdrop-blur-xl lg:sticky lg:top-0">
         <div className="page-shell flex h-[88px] items-center justify-between gap-6">
           <a href="#" aria-label="Eaton Mortgages home" className="shrink-0">
             <Image
@@ -335,7 +354,7 @@ export default function HomePage() {
               className="h-auto w-[154px] sm:w-[186px]"
             />
           </a>
-          <nav className="hidden items-center gap-7 text-[15px] font-medium text-brand-ink/72 xl:flex">
+          <nav className="hidden items-center gap-5 text-[14px] font-medium text-brand-ink/72 lg:flex xl:gap-7 xl:text-[15px]">
             <div className="nav-dropdown group relative">
               <button type="button" className="nav-link flex items-center gap-1.5 border-0 bg-transparent py-8 font-inherit text-inherit">
                 How can we help you?
@@ -385,14 +404,14 @@ export default function HomePage() {
             </div>
             <a className="nav-link" href="#how">How it works</a>
             <a className="nav-link" href="#stories">Testimonials</a>
-            <a className="nav-link" href="#window">Our window</a>
             <a className="nav-link" href="#faq">Advice</a>
           </nav>
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <Button href="#book" size="md" className="hidden rounded-xl px-6 py-3.5 text-base sm:inline-flex">
               Book A Chat <ArrowRight className="h-4 w-4" />
             </Button>
-            <details className="mobile-menu relative xl:hidden">
+            <details className="mobile-menu relative lg:hidden">
               <summary className="grid h-12 w-12 cursor-pointer list-none place-items-center rounded-xl border border-brand-ink/12 bg-white">
                 <Menu className="mobile-menu-icon h-5 w-5" />
                 <span className="sr-only">Open navigation</span>
@@ -418,7 +437,6 @@ export default function HomePage() {
                 <div className="grid gap-1">
                   <a href="#how" className="rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-brand-cream">How it works</a>
                   <a href="#stories" className="rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-brand-cream">Testimonials</a>
-                  <a href="#window" className="rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-brand-cream">Our window</a>
                   <a href="#faq" className="rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-brand-cream">Advice</a>
                 </div>
                 <Button href="#book" size="md" className="mt-3 w-full rounded-xl">
@@ -430,9 +448,19 @@ export default function HomePage() {
         </div>
       </header>
 
-      <section className="relative min-h-[680px] border-b border-brand-ink/8 lg:min-h-[700px]">
+      <section
+        className="hero-stage relative min-h-[680px] border-b border-brand-ink/8 lg:min-h-[700px]"
+        onPointerMove={moveHeroLights}
+        onPointerLeave={resetHeroLights}
+      >
+        <div className="hero-club-lights pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+          <div className="hero-club-orb hero-club-orb-pink" />
+          <div className="hero-club-orb hero-club-orb-green" />
+          <div className="hero-club-beam" />
+          <div className="hero-club-grid" />
+        </div>
         <div className="pointer-events-none absolute left-[-12rem] top-24 h-96 w-96 rounded-full border border-brand-pink/15" />
-        <BrandIconMotif className="-bottom-16 left-[4%] h-48 w-48 bg-brand-green opacity-[0.07]" />
+        <BrandIconMotif className="neon-motif neon-flicker-slow -bottom-16 left-[4%] h-48 w-48 bg-brand-green opacity-[0.07]" />
         <div className="page-shell relative z-10 grid gap-12 pb-14 pt-10 lg:grid-cols-[minmax(0,0.82fr)_minmax(600px,1.18fr)] lg:items-start lg:pb-16 lg:pt-10">
           <div className="relative z-20 max-w-[610px]">
             <div className="eyebrow-pill">
@@ -509,7 +537,7 @@ export default function HomePage() {
       <section id="services" className="relative overflow-hidden bg-[#201528] py-16 text-white md:py-20">
         <div className="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full border-[48px] border-brand-pink/[0.08]" />
         <div className="pointer-events-none absolute -bottom-32 left-[12%] h-64 w-64 rounded-full bg-brand-pink/[0.06] blur-3xl" />
-        <BrandIconMotif className="-bottom-20 right-[8%] h-56 w-56 bg-brand-green opacity-[0.07]" />
+        <BrandIconMotif className="neon-motif neon-flicker-delayed -bottom-20 right-[8%] h-56 w-56 bg-brand-green opacity-[0.07]" />
         <div className="page-shell">
           <div className="relative grid gap-7 lg:grid-cols-[1fr_0.72fr] lg:items-end">
             <div>
@@ -553,7 +581,7 @@ export default function HomePage() {
 
       <section id="how" className="relative isolate overflow-hidden py-24 md:py-32">
         <BrandRingMotif className="-left-32 bottom-10 h-80 w-80 border-brand-pink/[0.07]" />
-        <BrandIconMotif className="right-[3%] top-14 h-40 w-40 bg-brand-green opacity-[0.08]" />
+        <BrandIconMotif className="neon-motif neon-flicker-slow right-[3%] top-14 h-40 w-40 bg-brand-green opacity-[0.08]" />
         <div className="page-shell relative grid gap-12 lg:grid-cols-[0.82fr_1.18fr]">
           <div className="lg:sticky lg:top-32 lg:self-start">
             <SectionHeading
@@ -594,7 +622,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="relative isolate overflow-hidden bg-[#f1e7ed] py-24 md:py-32">
+      <section className="night-pink-section relative isolate overflow-hidden bg-[#f1e7ed] py-24 md:py-32">
         <BrandRingMotif className="-right-28 -top-24 h-80 w-80 border-brand-green/[0.13]" />
         <BrandIconMotif className="-bottom-20 left-[44%] h-60 w-60 bg-brand-pink opacity-[0.055]" />
         <BrandIconMotif className="-right-10 bottom-8 h-48 w-48 bg-brand-green opacity-[0.1]" />
@@ -726,7 +754,7 @@ export default function HomePage() {
       <MortgageJourneyDiscovery />
 
       <section id="stories" className="relative isolate overflow-hidden py-24 md:py-32">
-        <BrandIconMotif className="-right-16 top-12 h-52 w-52 bg-brand-pink opacity-[0.065]" />
+        <BrandIconMotif className="neon-motif neon-flicker-delayed -right-16 top-12 h-52 w-52 bg-brand-pink opacity-[0.065]" />
         <div className="page-shell relative">
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <SectionHeading
@@ -978,8 +1006,8 @@ export default function HomePage() {
       </section>
       </div>
 
-      <section id="faq" className="relative isolate overflow-hidden border-t border-brand-ink/8 bg-white py-24 md:py-32">
-        <BrandIconMotif className="-bottom-14 -left-12 h-56 w-56 bg-brand-green opacity-[0.08]" />
+      <section id="faq" className="night-pink-section relative isolate overflow-hidden border-t border-brand-ink/8 bg-white py-24 md:py-32">
+        <BrandIconMotif className="neon-motif neon-flicker-slow -bottom-14 -left-12 h-56 w-56 bg-brand-green opacity-[0.08]" />
         <BrandRingMotif className="-right-36 -top-32 h-80 w-80 border-brand-pink/[0.06]" />
         <div className="page-shell relative grid gap-14 lg:grid-cols-[0.76fr_1.24fr]">
           <div>
