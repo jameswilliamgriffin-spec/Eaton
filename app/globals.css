@@ -502,15 +502,6 @@ a {
   inset: 2rem;
 }
 
-.vinyl-record {
-  animation: vinyl-spin 18s linear infinite;
-  will-change: transform;
-}
-
-.soundtrack-card:hover .vinyl-record {
-  animation-play-state: paused;
-}
-
 .corner-card-label {
   font-size: 1rem;
   line-height: 1.35;
@@ -519,6 +510,45 @@ a {
 .music-dance {
   transform-origin: center bottom;
   animation: music-dance 1.8s ease-in-out infinite;
+}
+
+.soundtrack-active-glow {
+  opacity: 0;
+  background:
+    radial-gradient(circle at 58% 37%, rgba(150, 46, 139, 0.26), transparent 31%),
+    radial-gradient(circle at 31% 52%, rgba(104, 43, 125, 0.2), transparent 34%);
+  transition: opacity 900ms ease;
+}
+
+.soundtrack-record-glow {
+  opacity: 0;
+  background:
+    radial-gradient(circle, rgba(255, 140, 225, 0.34), rgba(150, 46, 139, 0.14) 48%, transparent 70%);
+  filter: blur(22px);
+  transform: scale(0.9);
+  transition:
+    opacity 800ms ease,
+    transform 1100ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.soundtrack-card.is-playing .soundtrack-active-glow {
+  opacity: 1;
+  animation: soundtrack-glow-breathe 4.5s ease-in-out infinite;
+}
+
+.soundtrack-card.is-playing .soundtrack-record-glow {
+  opacity: 1;
+  transform: scale(1.12);
+  animation: soundtrack-record-glow 3.6s ease-in-out infinite;
+}
+
+.soundtrack-equaliser span {
+  box-shadow: 0 0 8px rgba(150, 46, 139, 0.32);
+}
+
+.now-playing-dot {
+  box-shadow: 0 0 0 0 rgba(150, 46, 139, 0.35);
+  animation: now-playing-pulse 1.8s ease-out infinite;
 }
 
 .weather-cloud {
@@ -814,12 +844,6 @@ a {
   }
 }
 
-@keyframes vinyl-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes music-dance {
   0%,
   100% {
@@ -828,6 +852,49 @@ a {
 
   50% {
     transform: rotate(9deg) translateY(-2px);
+  }
+}
+
+@keyframes soundtrack-glow-breathe {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: scale(0.98);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.025);
+  }
+}
+
+@keyframes soundtrack-record-glow {
+  0%,
+  100% {
+    filter: blur(22px);
+    opacity: 0.68;
+  }
+
+  50% {
+    filter: blur(28px);
+    opacity: 1;
+  }
+}
+
+@keyframes now-playing-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(150, 46, 139, 0.38);
+    opacity: 1;
+  }
+
+  70% {
+    box-shadow: 0 0 0 7px rgba(150, 46, 139, 0);
+    opacity: 0.72;
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(150, 46, 139, 0);
+    opacity: 1;
   }
 }
 

@@ -20,8 +20,6 @@ import {
   MapPin,
   Menu,
   MessageCircleMore,
-  Music2,
-  Play,
   Search,
   ShieldCheck,
   Sparkles,
@@ -41,6 +39,7 @@ import { Button } from "@/components/ui/button";
 import { MortgageCalculatorStrip } from "@/components/mortgage-calculator-strip";
 import { SectionHeading } from "@/components/section-heading";
 import { SiteFooter } from "@/components/site-footer";
+import { SoundtrackPlayer } from "@/components/soundtrack-player";
 
 const testimonials = [
   {
@@ -220,9 +219,9 @@ const heroBenefits = [
 const currentSoundtrack = {
   title: "(It Goes Like) Nanana",
   artist: "Peggy Gou",
-  note: "A bright, easygoing office favourite for paperwork, phone calls and a little Friday feeling.",
+  note: "A proper dance-floor lift—bright, infectious and ideal for bringing a little Friday-night energy into the office.",
   artwork: "/images/ai-vinyl-record-3d-icon-png-download-jpg-14178472.png",
-  url: "https://www.youtube.com/watch?v=SlbVgjFvE3I",
+  audioSrc: "/audio/peggy-gou-nanana.mp3",
 };
 
 const currentWindowDisplay = {
@@ -973,42 +972,7 @@ export default function HomePage() {
             </div>
           </article>
 
-          <article className="soundtrack-card flex min-h-[470px] flex-col overflow-hidden rounded-[2.5rem] bg-[#f0ddea] p-8 lg:col-span-4 md:p-9">
-            <div className="flex items-center justify-between">
-              <p className="corner-card-label font-bold uppercase tracking-[0.18em] text-brand-pink">Today&apos;s Soundtrack</p>
-              <div className="music-dance grid h-11 w-11 place-items-center rounded-full bg-brand-pink text-white">
-                <Music2 className="h-5 w-5" />
-              </div>
-            </div>
-            <div>
-              <div className="relative mx-auto my-5 h-64 w-64 sm:h-72 sm:w-72 lg:h-64 lg:w-64 xl:h-72 xl:w-72">
-                <Image
-                  src={currentSoundtrack.artwork}
-                  alt="Vinyl record"
-                  width={450}
-                  height={450}
-                  className="vinyl-record h-full w-full object-contain drop-shadow-[0_20px_25px_rgba(40,20,38,0.22)]"
-                />
-                <a
-                  href={currentSoundtrack.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`Play ${currentSoundtrack.title} by ${currentSoundtrack.artist}`}
-                  className="group/play absolute bottom-3 right-3 inline-flex items-center gap-2 rounded-full border border-white/45 bg-brand-ink px-3 py-2.5 text-xs font-bold text-white shadow-[0_16px_35px_rgba(27,21,32,0.28)] backdrop-blur transition duration-300 hover:scale-105 hover:bg-brand-pink"
-                >
-                  <span className="grid h-8 w-8 place-items-center rounded-full bg-brand-green text-brand-ink transition group-hover/play:scale-110">
-                    <Play className="ml-0.5 h-4 w-4 fill-current" />
-                  </span>
-                  Play track
-                </a>
-              </div>
-              <h3 className="text-4xl font-semibold tracking-tight">{currentSoundtrack.title}</h3>
-              <p className="mt-1 text-lg text-brand-ink/55">{currentSoundtrack.artist}</p>
-              <p className="mt-5 max-w-sm leading-7 text-brand-ink/60">
-                {currentSoundtrack.note}
-              </p>
-            </div>
-          </article>
+          <SoundtrackPlayer {...currentSoundtrack} />
           </div>
         </div>
       </section>
