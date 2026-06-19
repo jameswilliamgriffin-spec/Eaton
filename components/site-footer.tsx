@@ -24,6 +24,7 @@ export function SiteFooter() {
               <a className="transition hover:text-white" href="#services">What we help with</a>
               <a className="transition hover:text-white" href="#how">How it works</a>
               <a className="transition hover:text-white" href="#stories">Local stories</a>
+              <a className="transition hover:text-white" href="#window">Our window displays</a>
               <a className="transition hover:text-white" href="#faq">Common questions</a>
             </nav>
           </div>

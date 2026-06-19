@@ -34,11 +34,11 @@ export function MortgageCalculatorStrip() {
   return (
     <section
       id="calculator"
-      className="relative isolate z-10 overflow-hidden border-y border-white/15 bg-[linear-gradient(135deg,#8f2a85_0%,#a23a96_55%,#8d2a84_100%)] py-7 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.16),inset_0_-1px_0_rgba(70,18,65,0.22),0_20px_45px_rgba(75,24,69,0.18)] md:py-9"
+      className="relative isolate z-10 overflow-hidden border-y border-white/15 bg-[linear-gradient(135deg,#8f2a85_0%,#a23a96_55%,#8d2a84_100%)] py-9 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.16),inset_0_-1px_0_rgba(70,18,65,0.22),0_20px_45px_rgba(75,24,69,0.18)] md:py-11"
     >
       <BrandIconMotif className="-left-8 -top-16 h-44 w-44 bg-white opacity-[0.09]" />
       <BrandIconMotif className="-bottom-20 right-[7%] h-48 w-48 bg-brand-green opacity-[0.13]" />
-      <div className="page-shell relative grid gap-6 xl:grid-cols-[0.72fr_1.65fr_auto] xl:items-end">
+      <div className="page-shell relative grid gap-7 xl:grid-cols-[0.72fr_1.65fr_auto] xl:items-end">
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-white/65">
             <Calculator className="h-4 w-4 text-brand-green" />
@@ -91,15 +91,18 @@ export function MortgageCalculatorStrip() {
           </label>
         </div>
 
-        <div className="xl:min-w-[205px] xl:translate-y-[2.15rem]">
+        <div className="calculator-field relative xl:min-w-[205px]">
+          <span className="invisible hidden xl:block" aria-hidden="true">Calculate</span>
           <button
             type="button"
             onClick={() => setShowEstimate(true)}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-brand-green px-6 py-4 font-bold text-brand-ink shadow-[0_14px_30px_rgba(56,25,53,0.24)] transition hover:-translate-y-0.5 hover:bg-[#bedc67]"
+            className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-brand-green px-6 text-xl font-bold normal-case tracking-normal text-brand-ink shadow-[0_14px_30px_rgba(56,25,53,0.24)] transition hover:-translate-y-0.5 hover:bg-[#bedc67]"
           >
-            Calculate <ArrowRight className="h-4 w-4" />
+            Calculate <ArrowRight className="h-5 w-5" />
           </button>
-          <p className="mt-2 text-center text-[10px] leading-4 text-white/55">Illustration based on a 4.75% repayment mortgage.</p>
+          <p className="mt-2 text-center text-[10px] font-normal normal-case leading-4 tracking-normal text-white/55 xl:absolute xl:left-0 xl:right-0 xl:top-full">
+            Illustration based on a 4.75% repayment mortgage.
+          </p>
         </div>
       </div>
 

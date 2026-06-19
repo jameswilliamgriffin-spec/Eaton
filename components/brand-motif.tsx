@@ -4,7 +4,8 @@ export function BrandIconMotif({ className }: { className?: string }) {
   return (
     <div
       aria-hidden="true"
-      className={cn("pointer-events-none absolute select-none bg-brand-pink opacity-[0.08]", className)}
+      data-ambient-brand
+      className={cn("pointer-events-none absolute select-none bg-brand-pink opacity-[0.08] will-change-transform", className)}
       style={{
         WebkitMaskImage: "url('/BRAND/ICON.svg')",
         maskImage: "url('/BRAND/ICON.svg')",

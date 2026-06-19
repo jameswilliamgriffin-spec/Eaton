@@ -69,7 +69,7 @@ export function BigDecisionsSection() {
 
         gsap.from("[data-principle-card]", {
           autoAlpha: 0,
-          y: 52,
+          y: window.innerWidth >= 1024 ? 52 : 0,
           duration: 0.85,
           ease: "power3.out",
           stagger: 0.14,
@@ -147,10 +147,6 @@ export function BigDecisionsSection() {
           </div>
 
           <div data-big-intro className="relative lg:pb-5 lg:pl-12">
-            <svg data-float className="absolute -left-8 -top-14 hidden h-20 w-20 text-brand-pink/55 lg:block" viewBox="0 0 90 90" fill="none" aria-hidden="true">
-              <path d="M8 62C27 61 43 52 52 38C58 29 63 19 62 9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-              <path d="M48 17L62 8L68 24" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
             <p className="max-w-2xl text-xl leading-9 text-brand-ink/62 lg:text-2xl lg:leading-10">
               Mortgages can be complicated. Speaking to your broker should not be. We take time to understand
               the life around the numbers, then explain your options like a neighbour would—clearly, patiently and without showing off.
@@ -162,37 +158,36 @@ export function BigDecisionsSection() {
           </div>
         </div>
 
-        <div data-principles className="relative mt-20 grid gap-6 pb-12 lg:grid-cols-3 lg:gap-7 lg:pb-20">
-          <svg className="absolute -top-10 left-[29%] hidden h-20 w-28 text-brand-pink/35 lg:block" viewBox="0 0 120 80" fill="none" aria-hidden="true">
-            <path d="M8 52C31 20 65 16 103 34" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeDasharray="5 7" />
-            <path d="M92 22L105 35L89 41" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-
+        <div data-principles className="relative mt-16 grid gap-6 pb-12 md:mt-20 lg:grid-cols-3 lg:gap-7 lg:pb-20">
           {principles.map((principle) => (
-            <article
+            <div
               data-principle-card
               key={principle.number}
-              className={`relative min-h-[330px] overflow-hidden rounded-[2.25rem] border border-brand-ink/8 p-7 shadow-[0_22px_60px_rgba(27,21,32,0.08)] md:p-9 ${principle.tone} ${principle.className}`}
+              className={principle.className}
             >
-              <div className="flex items-start justify-between gap-6">
-                <div className="grid h-16 w-16 place-items-center rounded-full border-2 border-brand-pink bg-brand-cream shadow-[inset_0_0_0_5px_#fff]">
-                  <span className="text-sm font-extrabold tracking-[0.12em] text-brand-pink">{principle.number}</span>
+              <article
+                className={`relative min-h-[390px] overflow-hidden rounded-[2.25rem] border border-brand-ink/8 px-7 pb-32 pt-7 shadow-[0_22px_60px_rgba(27,21,32,0.08)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_28px_70px_rgba(27,21,32,0.15)] md:min-h-[380px] md:p-9 md:pb-32 lg:min-h-[390px] ${principle.tone}`}
+              >
+                <div className="flex items-start justify-between gap-6">
+                  <div className="grid h-16 w-16 place-items-center rounded-full border-2 border-brand-pink bg-brand-cream shadow-[inset_0_0_0_5px_#fff]">
+                    <span className="text-sm font-extrabold tracking-[0.12em] text-brand-pink">{principle.number}</span>
+                  </div>
+                  <span data-float className="grid h-14 w-14 place-items-center rounded-2xl bg-white text-3xl shadow-sm" aria-hidden="true">
+                    {principle.emoji}
+                  </span>
                 </div>
-                <span data-float className="grid h-14 w-14 place-items-center rounded-2xl bg-white text-3xl shadow-sm" aria-hidden="true">
-                  {principle.emoji}
-                </span>
-              </div>
-              <p className="mt-8 text-[11px] font-bold uppercase tracking-[0.2em] text-brand-pink">{principle.label}</p>
-              <h3 className="mt-3 text-3xl font-semibold tracking-[-0.035em]">{principle.title}</h3>
-              <p className="mt-4 max-w-sm leading-7 text-brand-ink/58">{principle.text}</p>
-              <div className="absolute inset-x-7 bottom-7 flex items-center gap-3 border-t border-brand-ink/10 pt-5 text-sm font-semibold md:inset-x-9 md:bottom-8">
-                <svg className="h-6 w-7 shrink-0 text-brand-pink" viewBox="0 0 30 26" fill="none" aria-hidden="true">
-                  <path d="M3 13L10 21L27 4" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M5 10L11 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" opacity=".45" />
-                </svg>
-                {principle.note}
-              </div>
-            </article>
+                <p className="mt-8 text-[11px] font-bold uppercase tracking-[0.2em] text-brand-pink">{principle.label}</p>
+                <h3 className="mt-3 text-3xl font-semibold tracking-[-0.035em]">{principle.title}</h3>
+                <p className="mt-4 max-w-sm pb-3 leading-7 text-brand-ink/58">{principle.text}</p>
+                <div className="absolute inset-x-7 bottom-7 flex items-center gap-3 border-t border-brand-ink/10 pt-5 text-sm font-semibold md:inset-x-9 md:bottom-8">
+                  <svg className="h-6 w-7 shrink-0 text-brand-pink" viewBox="0 0 30 26" fill="none" aria-hidden="true">
+                    <path d="M3 13L10 21L27 4" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M5 10L11 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" opacity=".45" />
+                  </svg>
+                  {principle.note}
+                </div>
+              </article>
+            </div>
           ))}
 
           <div data-float className="absolute -bottom-2 right-8 hidden items-center gap-2 rounded-full bg-brand-pink px-5 py-3 text-sm font-semibold text-white shadow-soft lg:flex">

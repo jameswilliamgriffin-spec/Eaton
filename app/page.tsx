@@ -1,13 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import {
   ArrowDownRight,
   ArrowRight,
   Calculator,
   CalendarDays,
+  ChevronLeft,
   ChevronDown,
   ChevronRight,
+  CloudRain,
   CloudSun,
   Coffee,
   Heart,
@@ -18,16 +21,22 @@ import {
   Menu,
   MessageCircleMore,
   Music2,
+  Play,
   Search,
   ShieldCheck,
   Sparkles,
   Star,
-  SunMedium,
   Umbrella,
 } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { BigDecisionsSection } from "@/components/big-decisions-section";
 import { BrandIconMotif, BrandRingMotif } from "@/components/brand-motif";
+import {
+  HeroAtmosphere,
+  MortgageJourneyDiscovery,
+  PageAtmosphere,
+  WindowDisplayExperience,
+} from "@/components/creative-experiences";
 import { Button } from "@/components/ui/button";
 import { MortgageCalculatorStrip } from "@/components/mortgage-calculator-strip";
 import { SectionHeading } from "@/components/section-heading";
@@ -213,11 +222,108 @@ const currentSoundtrack = {
   artist: "Peggy Gou",
   note: "A bright, easygoing office favourite for paperwork, phone calls and a little Friday feeling.",
   artwork: "/images/ai-vinyl-record-3d-icon-png-download-jpg-14178472.png",
+  url: "https://www.youtube.com/watch?v=SlbVgjFvE3I",
 };
 
+const currentWindowDisplay = {
+  title: "Kings Heath Pride",
+  season: "Summer 2026",
+  image: "/images/kings-heath-pride-window.jpg",
+  alt: "Eaton Mortgages' Kings Heath Pride window display, featuring a rainbow and a Wizard of Oz inspired yellow brick road",
+};
+
+const teamMembers = [
+  {
+    name: "Deb",
+    role: "Founder & Mortgage Adviser",
+    image: "/BRAND/DEB HALL PINK.png",
+    imageAlt: "Deb Hall, owner of Eaton Mortgages",
+    initials: "DH",
+    accent: "pink",
+    headline: "The numbers matter. But so does how you feel getting there.",
+    paragraphs: [
+      "Eaton Mortgages was built around a simple idea: people deserve expert advice without being made to feel out of their depth.",
+      "Deb brings calm thinking, honest explanations and a very human approach to every conversation—whether you are buying for the first time or have moved more times than you care to count.",
+    ],
+    quote: "Mortgage advice with a good bedside manner.",
+  },
+  {
+    name: "Joe",
+    role: "Mortgage Adviser",
+    image: "/images/joe.jpg",
+    imageAlt: "Joe, mortgage adviser at Eaton Mortgages",
+    initials: "J",
+    accent: "green",
+    headline: "Bright energy, useful answers and plenty of mortgage know-how.",
+    paragraphs: [
+      "Joe is lively, bubbly and full of mortgage advice. He brings brilliant energy to the team and makes even the trickier parts of a mortgage feel easier to tackle.",
+      "Whether you need a quick answer or someone to talk through every option, Joe keeps things upbeat, practical and reassuring.",
+    ],
+    quote: "Big mortgage questions deserve bright, straightforward answers.",
+  },
+  {
+    name: "Sarah",
+    role: "Protection & Client Support",
+    initials: "S",
+    accent: "pink",
+    headline: "Protecting what matters and keeping everything moving.",
+    paragraphs: [
+      "Sarah looks after life insurance and protection, helping people put sensible plans in place for the people and homes they care about.",
+      "She is also the person making sure things get done on time—keeping an eye on the details, chasing what needs chasing and helping the whole process stay on track.",
+    ],
+    quote: "The right protection, the right details, all at the right time.",
+  },
+] as const;
+
+const rainDrops = Array.from({ length: 32 }, (_, index) => ({
+  left: `${3 + ((index * 29) % 94)}%`,
+  delay: `${-((index * 0.137) % 1.4).toFixed(2)}s`,
+  duration: `${(0.82 + ((index * 17) % 38) / 100).toFixed(2)}s`,
+  height: `${72 + ((index * 13) % 54)}px`,
+}));
+
 export default function HomePage() {
+  const [activeTeamMember, setActiveTeamMember] = useState(0);
+  const [teamSlideDirection, setTeamSlideDirection] = useState<"next" | "previous">("next");
+  const [reviewOffset, setReviewOffset] = useState(0);
+  const teamMember = teamMembers[activeTeamMember];
+  const isGreenTeamCard = teamMember.accent === "green";
+  const visibleTestimonials = testimonials.map((_, index) => testimonials[(index + reviewOffset) % testimonials.length]);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const timer = window.setTimeout(() => {
+      setTeamSlideDirection("next");
+      setActiveTeamMember((current) => (current + 1) % teamMembers.length);
+    }, 8000);
+
+    return () => window.clearTimeout(timer);
+  }, [activeTeamMember]);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const timer = window.setInterval(() => {
+      setReviewOffset((current) => (current + 1) % testimonials.length);
+    }, 5000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const showPreviousTeamMember = () => {
+    setTeamSlideDirection("previous");
+    setActiveTeamMember((current) => (current - 1 + teamMembers.length) % teamMembers.length);
+  };
+
+  const showNextTeamMember = () => {
+    setTeamSlideDirection("next");
+    setActiveTeamMember((current) => (current + 1) % teamMembers.length);
+  };
+
   return (
     <main className="overflow-hidden bg-brand-cream text-brand-ink">
+      <PageAtmosphere />
       <header className="relative z-50 border-b border-brand-ink/8 bg-brand-cream/95 backdrop-blur-xl xl:sticky xl:top-0">
         <div className="page-shell flex h-[88px] items-center justify-between gap-6">
           <a href="#" aria-label="Eaton Mortgages home" className="shrink-0">
@@ -280,6 +386,7 @@ export default function HomePage() {
             </div>
             <a className="nav-link" href="#how">How it works</a>
             <a className="nav-link" href="#stories">Testimonials</a>
+            <a className="nav-link" href="#window">Our window</a>
             <a className="nav-link" href="#faq">Advice</a>
           </nav>
           <div className="flex items-center gap-3">
@@ -288,7 +395,7 @@ export default function HomePage() {
             </Button>
             <details className="mobile-menu relative xl:hidden">
               <summary className="grid h-12 w-12 cursor-pointer list-none place-items-center rounded-xl border border-brand-ink/12 bg-white">
-                <Menu className="h-5 w-5" />
+                <Menu className="mobile-menu-icon h-5 w-5" />
                 <span className="sr-only">Open navigation</span>
               </summary>
               <div className="absolute right-0 top-[calc(100%+0.75rem)] w-[min(340px,calc(100vw-2rem))] rounded-[1.5rem] border border-brand-ink/8 bg-white p-3 shadow-[0_24px_70px_rgba(27,21,32,0.18)]">
@@ -312,6 +419,7 @@ export default function HomePage() {
                 <div className="grid gap-1">
                   <a href="#how" className="rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-brand-cream">How it works</a>
                   <a href="#stories" className="rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-brand-cream">Testimonials</a>
+                  <a href="#window" className="rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-brand-cream">Our window</a>
                   <a href="#faq" className="rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-brand-cream">Advice</a>
                 </div>
                 <Button href="#book" size="md" className="mt-3 w-full rounded-xl">
@@ -329,17 +437,21 @@ export default function HomePage() {
         <div className="page-shell relative z-10 grid gap-12 pb-14 pt-10 lg:grid-cols-[minmax(0,0.82fr)_minmax(600px,1.18fr)] lg:items-start lg:pb-16 lg:pt-10">
           <div className="relative z-20 max-w-[610px]">
             <div className="eyebrow-pill">
-              <MapPin className="h-3.5 w-3.5 text-brand-pink" />
+              <MapPin className="kings-heath-pin h-3.5 w-3.5 text-brand-pink" />
               Here in Kings Heath
             </div>
             <h1 className="mt-6 text-[clamp(3rem,4.75vw,5.25rem)] font-semibold leading-[0.91] tracking-[-0.06em]">
               A local mortgage broker that feels more like a{" "}
               <span className="accent-word text-brand-pink">friendly neighbour.</span>
             </h1>
-            <p className="mt-7 max-w-[570px] text-lg leading-8 text-brand-ink/66 md:text-xl md:leading-9">
-              Clear, independent mortgage advice for people buying, moving and remortgaging around
-              Kings Heath and Birmingham. Warm conversations, no jargon, and support right through to the keys.
-            </p>
+            <div className="mt-7 max-w-[590px]">
+              <p className="text-lg font-semibold leading-[1.45] text-brand-ink md:text-xl md:leading-[1.45]">
+                Get unbiased mortgage advice, then apply online with ease. It&apos;s totally free, as we get paid by lenders.
+              </p>
+              <p className="mt-3 max-w-[560px] text-sm leading-[1.55] text-brand-ink/55">
+                Friendly, independent support from Kings Heath, with clear answers, easy online applications and help right through to the keys. We&apos;ll take time to understand your plans, explain every option in plain English and keep you updated at each stage, so you always know what happens next.
+              </p>
+            </div>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Button href="#book" size="lg">
                 Book A Chat <ArrowDownRight className="h-5 w-5" />
@@ -355,29 +467,17 @@ export default function HomePage() {
 
           <div className="relative lg:-mt-2">
             <div className="relative h-[500px] lg:h-[590px]">
-              <div className="hero-photo absolute inset-y-0 left-0 w-[calc(100%+max(2rem,(100vw-80rem)/2))] overflow-hidden rounded-l-[3rem] bg-brand-sand shadow-[0_30px_90px_rgba(40,25,38,0.16)]">
-                <Image
-                  src="/images/4a7efc33-9fd3-49a9-ad6f-97076f37db9d.png"
-                  alt="A leafy residential street in Kings Heath"
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 60vw"
-                  className="object-cover object-center"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-brand-cream/18 via-transparent to-transparent" />
-                <div className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-brand-pink px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(150,46,139,0.28)] sm:left-7 sm:top-7">
-                  Local. Independent. Lovely.
-                  <Heart className="hero-heart h-4 w-4 fill-white text-white" aria-hidden="true" />
-                </div>
-              </div>
-              <div className="absolute -left-7 top-1/2 z-10 hidden max-w-[245px] -translate-y-1/2 rounded-[1.75rem] bg-white p-5 shadow-[0_18px_55px_rgba(27,21,32,0.16)] sm:block lg:-left-10">
-                <div className="flex items-center gap-1 text-brand-green">
+              <HeroAtmosphere />
+              <div className="absolute -left-7 top-1/2 z-10 hidden w-[218px] -translate-y-1/2 rounded-[1.75rem] bg-white p-5 shadow-[0_18px_55px_rgba(27,21,32,0.16)] sm:block lg:-left-10">
+                <div className="flex items-center gap-1.5 text-brand-green">
                   {Array.from({ length: 5 }).map((_, index) => (
-                    <Star key={index} className="h-4 w-4 fill-current" />
+                    <Star key={index} className="h-[18px] w-[18px] fill-current" />
                   ))}
                 </div>
-                <p className="mt-3 text-lg font-semibold leading-6">Calm advice. Clear next steps.</p>
-                <p className="mt-2 text-xs leading-5 text-brand-ink/55">And a real person at the end of the phone.</p>
+                <p className="mt-4 text-[1.15rem] font-semibold leading-[1.3] tracking-[-0.025em]">
+                  Calm advice. Clear
+                  <span className="block">next steps.</span>
+                </p>
               </div>
             </div>
             <div className="mt-5 grid w-[calc(100%+max(1rem,(100vw-80rem)/2))] overflow-hidden rounded-l-[2rem] border border-brand-ink/8 bg-white shadow-[0_16px_50px_rgba(27,21,32,0.08)] sm:grid-cols-3">
@@ -420,10 +520,6 @@ export default function HomePage() {
               </h2>
             </div>
             <div className="relative lg:pb-1">
-              <svg className="absolute -left-12 -top-9 hidden h-14 w-16 text-brand-pink lg:block" viewBox="0 0 70 60" fill="none" aria-hidden="true">
-                <path d="M4 49C23 47 37 37 43 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <path d="M34 26L44 20L48 33" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
               <p className="max-w-xl text-lg leading-8 text-white/66">
                 Buying, moving, remortgaging or protecting the people you love — we&apos;ll help make the mortgage side feel clear, calm and manageable.
               </p>
@@ -438,7 +534,7 @@ export default function HomePage() {
               >
                 <div className="flex items-start justify-between gap-5">
                   <div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-pink">{service.label}</p>
+                    <p className="text-sm font-bold uppercase tracking-[0.16em] text-brand-pink">{service.label}</p>
                     <span className="mt-2 block text-xs font-semibold text-brand-ink/30">0{index + 1}</span>
                   </div>
                   <span
@@ -505,39 +601,94 @@ export default function HomePage() {
         <BrandIconMotif className="-right-10 bottom-8 h-48 w-48 bg-brand-green opacity-[0.1]" />
         <div className="page-shell relative grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
           <div className="relative mx-auto w-full max-w-[520px] pb-12 pr-6">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[2.75rem] shadow-[0_30px_80px_rgba(70,35,65,0.17)]">
-              <Image
-                src="/BRAND/DEB HALL OWNER.jpg"
-                alt="Deb Hall, owner of Eaton Mortgages"
-                fill
-                sizes="(max-width: 1024px) 90vw, 40vw"
-                className="object-cover"
-              />
+            <div
+              key={`portrait-${teamMember.name}`}
+              className={`team-slide-visual relative aspect-[4/5] overflow-hidden rounded-[2.75rem] bg-brand-ink shadow-[0_30px_80px_rgba(70,35,65,0.17)] ${
+                teamSlideDirection === "next" ? "from-right" : "from-left"
+              }`}
+            >
+              {"image" in teamMember ? (
+                <Image
+                  key={teamMember.name}
+                  src={teamMember.image}
+                  alt={teamMember.imageAlt}
+                  fill
+                  sizes="(max-width: 1024px) 90vw, 40vw"
+                  className="object-cover"
+                />
+              ) : (
+                <div
+                  key={teamMember.name}
+                  className={`flex h-full flex-col items-center justify-center overflow-hidden ${
+                    isGreenTeamCard
+                      ? "bg-[radial-gradient(circle_at_25%_20%,#e5f3b8,transparent_32%),linear-gradient(145deg,#afce54,#77952c)]"
+                      : "bg-[radial-gradient(circle_at_25%_20%,#f0c7e9,transparent_32%),linear-gradient(145deg,#b846a8,#76236e)]"
+                  }`}
+                >
+                  <BrandRingMotif className="left-[-5rem] top-[-4rem] h-64 w-64 border-white/20" />
+                  <BrandIconMotif className="-bottom-12 -right-12 h-56 w-56 bg-white opacity-[0.1]" />
+                  <span className="relative grid h-40 w-40 place-items-center rounded-full border border-white/25 bg-white/15 text-7xl font-semibold tracking-[-0.06em] text-white shadow-[0_24px_65px_rgba(27,21,32,0.2)] backdrop-blur-sm">
+                    {teamMember.initials}
+                  </span>
+                  <p className="relative mt-7 text-sm font-bold uppercase tracking-[0.2em] text-white/75">{teamMember.role}</p>
+                </div>
+              )}
             </div>
-            <div className="absolute bottom-0 right-0 max-w-[255px] rounded-[1.9rem] border border-white/15 bg-brand-pink p-6 text-white shadow-[0_24px_65px_rgba(82,22,76,0.32),0_8px_22px_rgba(27,21,32,0.16)]">
+            <div
+              key={`quote-${teamMember.name}`}
+              className={`team-slide-quote absolute bottom-0 right-0 max-w-[270px] rounded-[1.9rem] border p-6 shadow-[0_24px_65px_rgba(82,22,76,0.25),0_8px_22px_rgba(27,21,32,0.16)] ${
+                teamSlideDirection === "next" ? "from-right" : "from-left"
+              } ${
+                isGreenTeamCard
+                  ? "border-brand-ink/10 bg-brand-green text-brand-ink"
+                  : "border-white/15 bg-brand-pink text-white"
+              }`}
+            >
               <div className="flex items-center gap-3">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white/15 shadow-inner ring-1 ring-white/20">
-                  <Heart className="hero-heart h-5 w-5 fill-white text-white" />
+                <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-2xl shadow-inner ring-1 ${isGreenTeamCard ? "bg-white/45 ring-brand-ink/10" : "bg-white/15 ring-white/20"}`}>
+                  <Heart className={`hero-heart h-5 w-5 fill-current ${isGreenTeamCard ? "text-brand-pink" : "text-white"}`} />
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/65">The Eaton approach</span>
+                <span className={`text-[10px] font-bold uppercase tracking-[0.2em] ${isGreenTeamCard ? "text-brand-ink/55" : "text-white/65"}`}>The Eaton approach</span>
               </div>
               <p className="mt-5 text-[1.35rem] font-semibold leading-[1.18] tracking-[-0.025em]">
-                Mortgage advice with a good bedside manner.
+                {teamMember.quote}
               </p>
             </div>
           </div>
           <div className="lg:pl-10">
-            <p className="accent-word text-4xl leading-none text-brand-pink md:text-5xl">Meet Deb</p>
+            <div
+              key={`copy-${teamMember.name}`}
+              className={`team-slide-copy ${teamSlideDirection === "next" ? "from-right" : "from-left"}`}
+            >
+            <div className="flex flex-wrap items-center justify-between gap-5">
+              <div>
+                <p className="accent-word text-4xl leading-none text-brand-pink md:text-5xl">Meet {teamMember.name}</p>
+                <p className="mt-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-ink/40">{teamMember.role}</p>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={showPreviousTeamMember}
+                  aria-label="Show previous team member"
+                  className="grid h-12 w-12 place-items-center rounded-full border border-brand-ink/12 bg-white transition hover:-translate-x-0.5 hover:border-brand-pink hover:text-brand-pink"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={showNextTeamMember}
+                  aria-label="Show next team member"
+                  className="grid h-12 w-12 place-items-center rounded-full bg-brand-ink text-white transition hover:translate-x-0.5 hover:bg-brand-pink"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
             <h2 className="mt-5 max-w-2xl text-[clamp(2.8rem,5vw,5.4rem)] font-semibold leading-[0.95] tracking-[-0.055em]">
-              The numbers matter. But so does how you feel getting there.
+              {teamMember.headline}
             </h2>
             <div className="mt-8 max-w-xl space-y-5 text-lg leading-8 text-brand-ink/64">
-              <p>
-                Eaton Mortgages was built around a simple idea: people deserve expert advice without being made to feel out of their depth.
-              </p>
-              <p>
-                Deb brings calm thinking, honest explanations and a very human approach to every conversation—whether you are buying for the first time or have moved more times than you care to count.
-              </p>
+              {teamMember.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
             </div>
             <div className="mt-8 flex items-center gap-4">
               <div className="grid h-11 w-11 place-items-center rounded-full bg-white">
@@ -548,9 +699,32 @@ export default function HomePage() {
                 <p className="text-sm text-brand-ink/50">Helping people across Birmingham and beyond</p>
               </div>
             </div>
+            <div className="mt-8 flex items-center gap-3" aria-label="Choose a team member">
+              {teamMembers.map((member, index) => (
+                <button
+                  key={member.name}
+                  type="button"
+                  onClick={() => {
+                    setTeamSlideDirection(index >= activeTeamMember ? "next" : "previous");
+                    setActiveTeamMember(index);
+                  }}
+                  aria-label={`Meet ${member.name}`}
+                  aria-current={index === activeTeamMember ? "true" : undefined}
+                  className={`h-2.5 rounded-full transition-all ${
+                    index === activeTeamMember ? "w-10 bg-brand-pink" : "w-2.5 bg-brand-ink/18 hover:bg-brand-ink/35"
+                  }`}
+                />
+              ))}
+              <span className="ml-2 text-xs font-semibold text-brand-ink/40">
+                {activeTeamMember + 1} / {teamMembers.length}
+              </span>
+            </div>
+            </div>
           </div>
         </div>
       </section>
+
+      <MortgageJourneyDiscovery />
 
       <section id="stories" className="relative isolate overflow-hidden py-24 md:py-32">
         <BrandIconMotif className="-right-16 top-12 h-52 w-52 bg-brand-pink opacity-[0.065]" />
@@ -606,10 +780,55 @@ export default function HomePage() {
             </article>
           ))}
         </div>
+        <div className="mt-12 flex justify-center">
+          <Button href="#stories" variant="ghost" size="lg" className="border border-brand-ink/10 bg-white">
+            Read more stories <ArrowRight className="h-5 w-5" />
+          </Button>
+        </div>
         </div>
       </section>
 
-      <section className="relative isolate overflow-hidden bg-brand-green py-24 md:py-28">
+      <div className="flex flex-col">
+      <section id="window" className="relative isolate order-3 overflow-hidden bg-[#201528] py-20 text-white md:py-28">
+        <div className="pointer-events-none absolute -left-28 top-14 h-72 w-72 rounded-full border-[44px] border-brand-pink/[0.09]" />
+        <BrandIconMotif className="-bottom-20 right-[5%] h-60 w-60 bg-brand-green opacity-[0.07]" />
+        <div className="page-shell relative grid gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-20">
+          <div className="relative">
+            <WindowDisplayExperience {...currentWindowDisplay} />
+          </div>
+
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.07] px-4 py-2 text-sm font-semibold text-brand-green">
+              <Sparkles className="h-4 w-4" />
+              A little joy on the high street
+            </div>
+            <h2 className="mt-7 max-w-xl text-[clamp(3rem,5vw,5.5rem)] font-semibold leading-[0.92] tracking-[-0.055em]">
+              There&apos;s always something new{" "}
+              <span className="text-brand-green">in the window.</span>
+            </h2>
+            <div className="mt-7 max-w-xl space-y-5 text-lg leading-8 text-white/66">
+              <p>
+                Our window displays change most months, following the seasons, celebrating special occasions and bringing a bit of colour to Kings Heath.
+              </p>
+              <p>
+                They have become a small local tradition. Grown-ups stop for a look, children spot the new details, and we love hearing which display has been everyone&apos;s favourite.
+              </p>
+            </div>
+            <div className="mt-9 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-green">This month</p>
+                <p className="mt-2 text-xl font-semibold">Proudly celebrating {currentWindowDisplay.title}</p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-green">Next up</p>
+                <p className="mt-2 text-xl font-semibold">A fresh display and a new surprise</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative isolate order-1 overflow-hidden bg-brand-green py-24 md:py-28">
         <BrandRingMotif className="-bottom-28 -left-28 h-80 w-80 border-white/15" />
         <BrandIconMotif className="-right-10 top-8 h-52 w-52 bg-brand-pink opacity-[0.09]" />
         <div className="page-shell relative grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
@@ -627,10 +846,10 @@ export default function HomePage() {
             </p>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
-            {testimonials.map((item, index) => (
+            {visibleTestimonials.map((item, index) => (
               <blockquote
-                key={item.name}
-                className={`rounded-[2rem] p-7 md:p-8 ${index === 0 ? "bg-brand-ink text-white md:col-span-2" : "bg-white/70"}`}
+                key={`${reviewOffset}-${item.name}`}
+                className={`review-cycle rounded-[2rem] p-7 md:p-8 ${index === 0 ? "bg-brand-ink text-white md:col-span-2" : "bg-white/70"}`}
               >
                 <div className={`flex gap-1 ${index === 0 ? "text-brand-green" : "text-brand-pink"}`}>
                   {Array.from({ length: 5 }).map((_, starIndex) => (
@@ -650,7 +869,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="relative isolate overflow-hidden py-24 md:py-32">
+      <section className="relative isolate order-2 overflow-hidden py-24 md:py-32">
         <BrandRingMotif className="-right-32 top-20 h-80 w-80 border-brand-pink/[0.07]" />
         <div className="page-shell relative">
           <div className="mb-12 grid gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
@@ -660,7 +879,7 @@ export default function HomePage() {
                 Kings Heath Corner
               </h2>
             </div>
-            <p className="max-w-2xl text-xl leading-9 text-brand-ink/60 lg:justify-self-end lg:text-2xl">
+            <p className="max-w-xl text-xl leading-9 text-brand-ink/60 lg:justify-self-end lg:text-2xl">
               The weather outside, a brilliant local business and today&apos;s soundtrack.
             </p>
           </div>
@@ -678,24 +897,57 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#201528] via-[#201528]/65 to-[#201528]/15" />
             <div className="weather-cloud weather-cloud-one absolute right-8 top-14 h-10 w-20 rounded-full bg-white/16 blur-[1px]" />
             <div className="weather-cloud weather-cloud-two absolute right-24 top-28 h-7 w-14 rounded-full bg-white/10 blur-[1px]" />
-            <div className="weather-sun absolute right-10 top-8 h-20 w-20 rounded-full bg-brand-green/25 blur-sm" />
+            <div className="rain-field rain-field-back absolute inset-0" aria-hidden="true">
+              {rainDrops.slice(0, 20).map((drop, index) => (
+                <span
+                  key={`back-${index}`}
+                  className="rain-drop"
+                  style={{
+                    left: drop.left,
+                    animationDelay: drop.delay,
+                    animationDuration: `${Number.parseFloat(drop.duration) * 1.35}s`,
+                    height: drop.height,
+                  }}
+                >
+                  <span className="rain-stem" />
+                  <span className="rain-splat" />
+                </span>
+              ))}
+            </div>
+            <div className="rain-field rain-field-front absolute inset-0" aria-hidden="true">
+              {rainDrops.map((drop, index) => (
+                <span
+                  key={`front-${index}`}
+                  className="rain-drop"
+                  style={{
+                    left: drop.left,
+                    animationDelay: drop.delay,
+                    animationDuration: drop.duration,
+                    height: drop.height,
+                  }}
+                >
+                  <span className="rain-stem" />
+                  <span className="rain-splat" />
+                </span>
+              ))}
+            </div>
             <div className="relative flex h-full min-h-[420px] max-w-md flex-col justify-between">
-              <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.16em] text-brand-green">
+              <div className="corner-card-label flex items-center gap-2 font-semibold uppercase tracking-[0.16em] text-brand-green">
                 <CloudSun className="weather-icon h-5 w-5" />
                 Kings Heath Weather
               </div>
               <div>
                 <div className="flex items-center gap-3">
-                  <SunMedium className="weather-sun-icon h-10 w-10 text-brand-green" />
+                  <CloudRain className="weather-icon h-10 w-10 text-brand-green" />
                   <Umbrella className="h-8 w-8 text-white/45" />
                 </div>
                 <div className="mt-6 flex items-end gap-4">
-                  <span className="text-6xl font-semibold leading-none tracking-[-0.06em] md:text-7xl">23°</span>
-                  <span className="mb-1 rounded-full bg-white/12 px-4 py-2 text-sm font-semibold text-white/80 backdrop-blur">Cloudy</span>
+                  <span className="text-6xl font-semibold leading-none tracking-[-0.06em] md:text-7xl">19°</span>
+                  <span className="mb-1 rounded-full bg-white/12 px-4 py-2 text-sm font-semibold text-white/80 backdrop-blur">Rain</span>
                 </div>
-                <h3 className="mt-5 text-4xl font-semibold leading-tight md:text-5xl">Four seasons before lunch?</h3>
+                <h3 className="mt-5 text-4xl font-semibold leading-tight md:text-5xl">Sunshine? Rain? Both?</h3>
                 <p className="mt-4 text-lg leading-8 text-white/68">
-                  Very possible. Whatever the Birmingham skies are doing, there&apos;s always time for a warm drink and a calm mortgage chat.
+                  This is Birmingham, after all. Whatever the weather&apos;s doing, there&apos;s always time for a proper brew and a relaxed mortgage chat.
                 </p>
               </div>
             </div>
@@ -705,7 +957,7 @@ export default function HomePage() {
             <BrandIconMotif className="-bottom-12 -right-12 h-40 w-40 bg-brand-pink opacity-[0.055]" />
             <div className="relative flex h-full min-h-[366px] flex-col">
               <div className="flex items-center justify-between">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-pink">Local Business of the Month</p>
+                <p className="corner-card-label font-bold uppercase tracking-[0.18em] text-brand-pink">Local Business of the Month</p>
                 <span className="grid h-11 w-11 place-items-center rounded-2xl bg-brand-pink text-xl text-white" aria-hidden="true">☕</span>
               </div>
               <div className="mt-auto">
@@ -714,22 +966,22 @@ export default function HomePage() {
                 <p className="mt-5 leading-7 text-brand-ink/60">
                   A neighbourhood favourite for good coffee, friendly faces and the kind of table where mortgage paperwork feels slightly less scary.
                 </p>
-                <span className="mt-7 inline-flex items-center gap-2 border-b border-brand-pink/25 pb-1 text-sm font-bold text-brand-pink">
+                <a href="#book" className="mt-7 inline-flex items-center gap-2 border-b border-brand-pink/25 pb-1 text-sm font-bold text-brand-pink transition hover:border-brand-pink hover:text-[#7f2376]">
                   Pop in for a coffee <ArrowRight className="h-4 w-4" />
-                </span>
+                </a>
               </div>
             </div>
           </article>
 
           <article className="soundtrack-card flex min-h-[470px] flex-col overflow-hidden rounded-[2.5rem] bg-[#f0ddea] p-8 lg:col-span-4 md:p-9">
             <div className="flex items-center justify-between">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-pink">Today&apos;s Soundtrack</p>
-              <div className="grid h-11 w-11 place-items-center rounded-full bg-brand-pink text-white">
+              <p className="corner-card-label font-bold uppercase tracking-[0.18em] text-brand-pink">Today&apos;s Soundtrack</p>
+              <div className="music-dance grid h-11 w-11 place-items-center rounded-full bg-brand-pink text-white">
                 <Music2 className="h-5 w-5" />
               </div>
             </div>
             <div>
-              <div className="mx-auto my-7 h-48 w-48 md:h-52 md:w-52">
+              <div className="relative mx-auto my-5 h-64 w-64 sm:h-72 sm:w-72 lg:h-64 lg:w-64 xl:h-72 xl:w-72">
                 <Image
                   src={currentSoundtrack.artwork}
                   alt="Vinyl record"
@@ -737,6 +989,18 @@ export default function HomePage() {
                   height={450}
                   className="vinyl-record h-full w-full object-contain drop-shadow-[0_20px_25px_rgba(40,20,38,0.22)]"
                 />
+                <a
+                  href={currentSoundtrack.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Play ${currentSoundtrack.title} by ${currentSoundtrack.artist}`}
+                  className="group/play absolute bottom-3 right-3 inline-flex items-center gap-2 rounded-full border border-white/45 bg-brand-ink px-3 py-2.5 text-xs font-bold text-white shadow-[0_16px_35px_rgba(27,21,32,0.28)] backdrop-blur transition duration-300 hover:scale-105 hover:bg-brand-pink"
+                >
+                  <span className="grid h-8 w-8 place-items-center rounded-full bg-brand-green text-brand-ink transition group-hover/play:scale-110">
+                    <Play className="ml-0.5 h-4 w-4 fill-current" />
+                  </span>
+                  Play track
+                </a>
               </div>
               <h3 className="text-4xl font-semibold tracking-tight">{currentSoundtrack.title}</h3>
               <p className="mt-1 text-lg text-brand-ink/55">{currentSoundtrack.artist}</p>
@@ -748,6 +1012,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      </div>
 
       <section id="faq" className="relative isolate overflow-hidden border-t border-brand-ink/8 bg-white py-24 md:py-32">
         <BrandIconMotif className="-bottom-14 -left-12 h-56 w-56 bg-brand-green opacity-[0.08]" />
